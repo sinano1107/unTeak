@@ -1,1 +1,17 @@
-<p>login works!</p>
+<div>
+  <h2>ログインページ</h2>
+  <label for="inputEmail">メールアドレス</label>
+  <input type="email" id="inputEmail" [(ngModel)]="account.email"
+          placeholder="メールアドレスを入力してください" required
+          autocomplete="username email" autofocus>
+
+  <label for="inputPassword">パスワード</label>
+  <input type="password" id="inputPassword" [(ngModel)]="account.password"
+          placeholder="パスワードを入力してください" required
+          autocomplete="new-password" >
+
+  <button>ログイン(仮)</button>
+
+  <p>email: {{ account.email }}</p>
+  <p>password: {{ account.password }}</p>
+</div>
