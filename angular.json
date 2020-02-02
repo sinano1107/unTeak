@@ -120,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "unTeak"
+    }
+  },
+  "defaultProject": "unTeak",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
