@@ -12,7 +12,7 @@ export class LoadSessions implements Action {
   readonly type = SessionActionTypes.LoadSessions;
 }
 
-// 読み込み成功のアクション
+// 読み込み成功時のアクション
 export class LoadSessionsSuccess implements Action {
   readonly type = SessionActionTypes.LoadSessionsSuccess;
 

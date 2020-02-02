@@ -31,3 +31,8 @@ export function logger(reducer: ActionReducer<State>) {
     return newState;
   };
 }
+
+// 取得用セレクタ
+export const selectSession = (state: State) => state.session;
+export const getLoading = createSelector(selectSession, fromSession.getSessionLoading);
+export const getSession = createSelector(selectSession, fromSession.getSessionData);
