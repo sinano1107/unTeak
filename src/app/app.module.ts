@@ -5,16 +5,19 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
+import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 
 // ルート
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
+  { path: '**', component: PageNotFoundComponent }
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
