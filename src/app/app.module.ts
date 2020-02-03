@@ -9,6 +9,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
+
 import { CoreModule } from './core/core.module';
 
 // ルート
