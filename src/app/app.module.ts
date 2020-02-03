@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 
+import { CoreModule } from './core/core.module';
+
 // ルート
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
@@ -30,6 +32,7 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
