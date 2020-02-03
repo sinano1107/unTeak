@@ -6,11 +6,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { SessionEffects } from './store/effects/session.effects';
+import { TestComponent } from './test/test.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [TestComponent],
   imports: [
     CommonModule,
     StoreModule.forRoot(reducers, {
@@ -26,6 +27,9 @@ import { SessionEffects } from './store/effects/session.effects';
       maxAge: 25, // stateの上限を設定
       logOnly: environment.production, // 開発環境でのみ動作するように制限n
     })
+  ],
+  exports: [
+    TestComponent
   ]
 })
 export class CoreModule { }

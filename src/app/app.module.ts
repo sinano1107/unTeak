@@ -9,6 +9,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
+import { CoreModule } from './core/core.module';
 
 // ルート
 const appRoutes: Routes = [
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
