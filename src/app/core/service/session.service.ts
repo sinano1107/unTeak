@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { Account } from '../../class/account';
 import * as fromCore from '../../core/store/reducers';
-import { LoadSessions, LoginSessions, } from '../store/actions/session.actions';
+import { LoadSessions, LoginSessions, LogoutSessions } from '../store/actions/session.actions';
 
 
 @Injectable({
@@ -23,5 +23,10 @@ export class SessionService {
   // ログイン
   login(account: Account): void {
     this.store.dispatch(new LoginSessions({email: account.email, password: account.password}))
+  }
+
+  // ログアウト
+  logout(): void {
+    this.store.dispatch(new LogoutSessions);
   }
 }

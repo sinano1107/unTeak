@@ -13,4 +13,8 @@ export class AppComponent {
   constructor(private session: SessionService,) {
     this.session.checkLogin();
   }
+
+  logout(): void {
+    this.session.logout();
+  }
 }

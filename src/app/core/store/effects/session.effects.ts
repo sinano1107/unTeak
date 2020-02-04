@@ -13,6 +13,9 @@ import {
   LoginSessions,
   LoginSessionsSuccess,
   LoginSessionsFail,
+  LogoutSessions,
+  LogoutSessionsSuccess,
+  LogoutSessionsFail,
 } from '../actions/session.actions';
 import { Session } from '../../../class/session';
 import { User } from '../../../class/user';
@@ -69,7 +72,6 @@ export class SessionEffects {
               this.afAuth.auth.signOut()
               return new LoginSessionsSuccess({ session: new Session() });
             } else {
-              console.debug('うんこ', auth);
               return new LoginSessionsSuccess({ session: new Session(
                                                 new User(auth.user.uid, auth.user.displayName)) });
             }
@@ -81,12 +83,40 @@ export class SessionEffects {
       })
     )
 
+  // ログアウト時の処理
+  @Effect()
+  logoutSessions$: Observable<Action> =
+  this.actions$.pipe(
+    ofType<LogoutSessions>(SessionActionTypes.LogoutSessions),
+    switchMap(() => {
+      return this.afAuth.auth.signOut()
+        .then(() => {
+          alert('ログアウトしました');
+          return new LogoutSessionsSuccess({
+            session: new Session()
+          });
+        });
+    }),
+    catchError(this.handleLoginError<LogoutSessionsFail>(
+      'logoutUser', new LogoutSessionsFail(), 'logout'
+    ))
+  )
+
   // エラー発生時の処理
-  private handleLoginError<T> (operation = 'operation', result: T) {
+  private handleLoginError<T> (operation = 'operation', result: T, dialog?: 'login' | 'logout') {
     return (error: any): Observable<T> => {
 
       // 失敗した操作の名前、エラーログをconsoleに出力
       console.error(`${operation} failed: ${error.message}`);
+
+      // アラートダイアログの表示
+      if (dialog == 'login') {
+        alert('ログインに失敗しました。\n' + error);
+      }
+
+      if (dialog == 'logout') {
+        alert('ログアウトに失敗しました。\n' + error);
+      }
 
       // ログアウト処理
       this.afAuth.auth.signOut()

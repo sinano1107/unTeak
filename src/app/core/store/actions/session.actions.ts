@@ -8,6 +8,9 @@ export enum SessionActionTypes {
   LoginSessions = '[Session] Login',
   LoginSessionsSuccess = '[Session] Login Success',
   LoginSessionsFail = '[Session] Login Fail',
+  LogoutSessions = '[Session] Logout',
+  LogoutSessionsSuccess = '[Session] Logout Success',
+  LogoutSessionsFail = '[Session] Logout Fail',
 }
 
 // 読み込み時のアクション
@@ -50,6 +53,25 @@ export class LoginSessionsFail implements Action {
   constructor(public payload?: { error: any }) {}
 }
 
+// ログアウト時のアクション
+export class LogoutSessions implements Action {
+  readonly type = SessionActionTypes.LogoutSessions;
+}
+
+// ログアウト成功時のアクション
+export class LogoutSessionsSuccess implements Action {
+  readonly type = SessionActionTypes.LogoutSessionsSuccess;
+
+  constructor(public payload: { session: Session }) {}
+}
+
+// ログアウト失敗時のアクション
+export class LogoutSessionsFail implements Action {
+  readonly type = SessionActionTypes.LogoutSessionsFail;
+
+  constructor(public payload?: { error: any }) {}
+}
+
 
 export type SessionActions =
   | LoadSessions
@@ -57,4 +79,7 @@ export type SessionActions =
   | LoadSessionsFail
   | LoginSessions
   | LoginSessionsSuccess
-  | LoginSessionsFail;
+  | LoginSessionsFail
+  | LogoutSessions
+  | LogoutSessionsSuccess
+  | LogoutSessionsFail;
