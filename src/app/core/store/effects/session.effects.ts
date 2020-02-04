@@ -64,7 +64,8 @@ export class SessionEffects {
           .then(auth => {
             // ユーザーが存在しなかった場合は、空のセッションを返す
             if (!auth.user.emailVerified) {
-              alert('メールアドレスが確認できていません。');
+              auth.user.sendEmailVerification()
+              alert('メールアドレスが確認できていません。\n確認用メールを再送しました！');
               this.afAuth.auth.signOut()
               return new LoginSessionsSuccess({ session: new Session() });
             } else {
