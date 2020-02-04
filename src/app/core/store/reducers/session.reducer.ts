@@ -23,16 +23,19 @@ export function reducer(
 
     // 読み込み時のアクション
     case SessionActionTypes.LoadSessions: {
+      console.debug('読み込み時のアクション(LoadSessions)実行');
       return { ...state, loading: true };
     }
 
     // 読み込み成功時のアクション
     case SessionActionTypes.LoadSessionsSuccess: {
+      console.debug('読み込み成功時のアクション(LoadSessionsSuccess)実行');
       return { ...state, loading: false, session: action.payload.session };
     }
 
     // 読み込み失敗時のアクション
     case SessionActionTypes.LoadSessionsFail: {
+      console.debug('読み込み失敗時のアクション(LoadSessionsFail)実行');
       return { ...state, loading: false };
     }
 
