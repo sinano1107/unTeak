@@ -14,6 +14,7 @@ export class SessionService {
 
   // ログイン状況確認
   checkLogin(): void {
+    console.debug('checkLogin実行--from(sessionService)');
     this.store.dispatch(new LoadSessions());
   }
 }
