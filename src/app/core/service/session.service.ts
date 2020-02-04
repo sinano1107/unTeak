@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
+import { Account } from '../../class/account';
 import * as fromCore from '../../core/store/reducers';
-import { LoadSessions, } from '../store/actions/session.actions';
+import { LoadSessions, LoginSessions, } from '../store/actions/session.actions';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +18,10 @@ export class SessionService {
   checkLogin(): void {
     console.debug('checkLogin実行--from(sessionService)');
     this.store.dispatch(new LoadSessions());
+  }
+
+  // ログイン
+  login(account: Account): void {
+    this.store.dispatch(new LoginSessions({email: account.email, password: account.password}))
   }
 }

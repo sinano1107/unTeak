@@ -10,6 +10,9 @@ import {
   LoadSessions,
   LoadSessionsSuccess,
   LoadSessionsFail,
+  LoginSessions,
+  LoginSessionsSuccess,
+  LoginSessionsFail,
 } from '../actions/session.actions';
 import { Session } from '../../../class/session';
 import { User } from '../../../class/user';
@@ -22,6 +25,7 @@ export class SessionEffects {
   constructor(private actions$: Actions,
               private afAuth: AngularFireAuth,) {}
 
+  // 読み込み時の処理
   @Effect()
   LoadSession$: Observable<Action> =
     this.actions$.pipe(
@@ -46,6 +50,35 @@ export class SessionEffects {
           )
       })
     );
+
+  // ログイン時の処理
+  @Effect()
+  loginSession$: Observable<Action> =
+    this.actions$.pipe(
+      ofType<LoginSessions>(SessionActionTypes.LoginSessions),
+      map(action => action.payload),
+      switchMap((payload: { email: string, password: string }) => {
+        return this.afAuth
+          .auth
+          .signInWithEmailAndPassword(payload.email, payload.password)
+          .then(auth => {
+            // ユーザーが存在しなかった場合は、空のセッションを返す
+            if (!auth.user.emailVerified) {
+              alert('メールアドレスが確認できていません。');
+              this.afAuth.auth.signOut()
+              return new LoginSessionsSuccess({ session: new Session() });
+            } else {
+              console.debug('うんこ', auth);
+              return new LoginSessionsSuccess({ session: new Session(
+                                                new User(auth.user.uid, auth.user.displayName)) });
+            }
+          })
+          .catch(err => {
+            alert('ログインに失敗しました。\n' + err);
+            return new LoginSessionsFail({ error: err });
+          });
+      })
+    )
 
   // エラー発生時の処理
   private handleLoginError<T> (operation = 'operation', result: T) {

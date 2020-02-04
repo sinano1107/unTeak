@@ -39,6 +39,24 @@ export function reducer(
       return { ...state, loading: false };
     }
 
+    // ログイン時のアクション
+    case SessionActionTypes.LoginSessions: {
+      console.debug('ログイン時のアクション(LoginSessions)実行');
+      return { ...state, loading: true };
+    }
+
+    // ログイン成功時のアクション
+    case SessionActionTypes.LoginSessionsSuccess: {
+      console.debug('ログイン成功時のアクション(LoginSessionsSuccess)実行');
+      return { ...state, loading: false, session: action.payload.session }
+    }
+
+    // ログイン失敗時のアクション
+    case SessionActionTypes.LoginSessionsFail: {
+      console.debug('ログイン失敗時のアクション(LoginSessionsFail)実行');
+      return { ...state, loading: false }
+    }
+
     default:
       return state;
   }
