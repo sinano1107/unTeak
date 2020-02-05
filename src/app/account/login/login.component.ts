@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { SessionService } from '../../core/service/session.service';
 import { Account } from '../../class/account';
 
 @Component({
@@ -12,9 +13,14 @@ export class LoginComponent implements OnInit {
   // アカウント型のaccountを作りinputを保存
   public account = new Account();
 
-  constructor() { }
+  constructor(private sessionService: SessionService) { }
 
   ngOnInit() {
+  }
+
+  submitLogin(e: Event) {
+    e.preventDefault();
+    this.sessionService.login(this.account);
   }
 
 }

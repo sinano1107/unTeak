@@ -10,6 +10,12 @@ import {
   LoadSessions,
   LoadSessionsSuccess,
   LoadSessionsFail,
+  LoginSessions,
+  LoginSessionsSuccess,
+  LoginSessionsFail,
+  LogoutSessions,
+  LogoutSessionsSuccess,
+  LogoutSessionsFail,
 } from '../actions/session.actions';
 import { Session } from '../../../class/session';
 import { User } from '../../../class/user';
@@ -22,6 +28,7 @@ export class SessionEffects {
   constructor(private actions$: Actions,
               private afAuth: AngularFireAuth,) {}
 
+  // 読み込み時の処理
   @Effect()
   LoadSession$: Observable<Action> =
     this.actions$.pipe(
@@ -47,12 +54,69 @@ export class SessionEffects {
       })
     );
 
+  // ログイン時の処理
+  @Effect()
+  loginSession$: Observable<Action> =
+    this.actions$.pipe(
+      ofType<LoginSessions>(SessionActionTypes.LoginSessions),
+      map(action => action.payload),
+      switchMap((payload: { email: string, password: string }) => {
+        return this.afAuth
+          .auth
+          .signInWithEmailAndPassword(payload.email, payload.password)
+          .then(auth => {
+            // ユーザーが存在しなかった場合は、空のセッションを返す
+            if (!auth.user.emailVerified) {
+              auth.user.sendEmailVerification()
+              alert('メールアドレスが確認できていません。\n確認用メールを再送しました！');
+              this.afAuth.auth.signOut()
+              return new LoginSessionsSuccess({ session: new Session() });
+            } else {
+              return new LoginSessionsSuccess({ session: new Session(
+                                                new User(auth.user.uid, auth.user.displayName)) });
+            }
+          })
+          .catch(err => {
+            alert('ログインに失敗しました。\n' + err);
+            return new LoginSessionsFail({ error: err });
+          });
+      })
+    )
+
+  // ログアウト時の処理
+  @Effect()
+  logoutSessions$: Observable<Action> =
+  this.actions$.pipe(
+    ofType<LogoutSessions>(SessionActionTypes.LogoutSessions),
+    switchMap(() => {
+      return this.afAuth.auth.signOut()
+        .then(() => {
+          alert('ログアウトしました');
+          return new LogoutSessionsSuccess({
+            session: new Session()
+          });
+        });
+    }),
+    catchError(this.handleLoginError<LogoutSessionsFail>(
+      'logoutUser', new LogoutSessionsFail(), 'logout'
+    ))
+  )
+
   // エラー発生時の処理
-  private handleLoginError<T> (operation = 'operation', result: T) {
+  private handleLoginError<T> (operation = 'operation', result: T, dialog?: 'login' | 'logout') {
     return (error: any): Observable<T> => {
 
       // 失敗した操作の名前、エラーログをconsoleに出力
       console.error(`${operation} failed: ${error.message}`);
+
+      // アラートダイアログの表示
+      if (dialog == 'login') {
+        alert('ログインに失敗しました。\n' + error);
+      }
+
+      if (dialog == 'logout') {
+        alert('ログアウトに失敗しました。\n' + error);
+      }
 
       // ログアウト処理
       this.afAuth.auth.signOut()

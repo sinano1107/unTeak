@@ -23,16 +23,55 @@ export function reducer(
 
     // 読み込み時のアクション
     case SessionActionTypes.LoadSessions: {
+      console.debug('読み込み時のアクション(LoadSessions)実行');
       return { ...state, loading: true };
     }
 
     // 読み込み成功時のアクション
     case SessionActionTypes.LoadSessionsSuccess: {
+      console.debug('読み込み成功時のアクション(LoadSessionsSuccess)実行');
       return { ...state, loading: false, session: action.payload.session };
     }
 
     // 読み込み失敗時のアクション
     case SessionActionTypes.LoadSessionsFail: {
+      console.debug('読み込み失敗時のアクション(LoadSessionsFail)実行');
+      return { ...state, loading: false };
+    }
+
+    // ログイン時のアクション
+    case SessionActionTypes.LoginSessions: {
+      console.debug('ログイン時のアクション(LoginSessions)実行');
+      return { ...state, loading: true };
+    }
+
+    // ログイン成功時のアクション
+    case SessionActionTypes.LoginSessionsSuccess: {
+      console.debug('ログイン成功時のアクション(LoginSessionsSuccess)実行');
+      return { ...state, loading: false, session: action.payload.session }
+    }
+
+    // ログイン失敗時のアクション
+    case SessionActionTypes.LoginSessionsFail: {
+      console.debug('ログイン失敗時のアクション(LoginSessionsFail)実行');
+      return { ...state, loading: false }
+    }
+
+    // ログアウト時のアクション
+    case SessionActionTypes.LogoutSessions: {
+      console.debug('ログアウト時のアクション(LogoutSessions)実行');
+      return { ...state, loading: true };
+    }
+
+    // ログアウト成功時のアクション
+    case SessionActionTypes.LogoutSessionsSuccess: {
+      console.debug('ログアウト成功時のアクション');
+      return { ...state, loading: false, session: action.payload.session };
+    }
+
+    // ログアウト失敗時のアクション
+    case SessionActionTypes.LogoutSessionsFail: {
+      console.debug('ログアウト失敗時のアクション');
       return { ...state, loading: false };
     }
 
