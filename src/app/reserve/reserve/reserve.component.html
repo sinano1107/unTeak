@@ -1,1 +1,5 @@
-<p>reserve works!</p>
+<h2>session: {{session}}</h2>
+<h2>reserves: {{reserves}}</h2>
+<ng-container *ngFor="let reserve of reserves | async">
+  <p>{{reserve.id}}</p>
+</ng-container>
