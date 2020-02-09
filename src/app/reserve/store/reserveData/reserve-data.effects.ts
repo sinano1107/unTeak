@@ -4,6 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { Update } from '@ngrx/entity';
 
 import { Community } from '../../../class/community';
 import { ReserveData } from '../../../class/reserve-data';
@@ -13,6 +14,7 @@ import {
   LoadReserveDatasSuccess,
   LoadReserveDatasFail,
   AddReserveData,
+  UpdateReserveData,
   DeleteReserveData,
   WriteReserveDataSuccess,
   WriteReserveDataFail,
@@ -77,6 +79,28 @@ export class ReserveDataEffects {
           .add(reserveData.deserialize())
           .then(() => new WriteReserveDataSuccess())
           .catch(() => new WriteReserveDataFail({ error: 'failed.to add' }));
+      })
+    )
+
+  // reserveData編集時のエフェクト
+  @Effect()
+  updateReserveData$: Observable<Action> =
+    this.actions$.pipe(
+      ofType<UpdateReserveData>(ReserveDataActionTypes.UpdateReserveData),
+      map(action => action.payload.reserveData),
+      switchMap((reserveData: Update<ReserveData>) => {
+        return this.db.collection('communities')
+          .doc('g3Xnp6T1S9xwsDhZLyYZ')
+          .collection('reserveDatas')
+          .doc(reserveData.id.toString())
+          .update({
+            reserveId: reserveData.changes.reserveId,
+            campusId: reserveData.changes.campusId,
+          })
+          .then(() => {
+            return new WriteReserveDataSuccess()
+          })
+          .catch(() => new WriteReserveDataFail({ error: 'failed to update' }));
       })
     )
 

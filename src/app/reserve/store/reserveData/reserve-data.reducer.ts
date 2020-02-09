@@ -44,6 +44,12 @@ export function reducer(
       return { ...state, loading: true };
     }
 
+    // reserveData編集時のアクション
+    case ReserveDataActionTypes.UpdateReserveData: {
+      console.debug('reserveData編集時のアクション(UpdateReserveData)実行');
+      return { ...state, loading: true };
+    }
+
     // reserveData削除時のアクション
     case ReserveDataActionTypes.DeleteReserveData: {
       console.debug('reserveData削除時のアクション(DeleteReserveData)実行');

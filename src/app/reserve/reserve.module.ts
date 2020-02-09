@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { ReserveRoutingModule } from './reserve-routing.module';
 import { ReserveComponent } from './reserve/reserve.component';
@@ -15,6 +16,7 @@ import { ReserveDataEffects } from './store/reserveData/reserve-data.effects';
   declarations: [ReserveComponent,],
   imports: [
     CommonModule,
+    FormsModule,
     ReserveRoutingModule,
     StoreModule.forFeature('reserve', fromReserve.reducer),
     EffectsModule.forFeature([ReserveEffects, ReserveDataEffects]),

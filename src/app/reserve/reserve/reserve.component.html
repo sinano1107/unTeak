@@ -7,7 +7,12 @@
 <ng-container *ngFor="let reserveData of reserveDatas | async">
   <div>
     <button (click)="delete(reserveData.id)">delete!</button>
+    <button (click)="update(reserveData.id, update_reserveData)">update!</button>
+    <input type="text" [(ngModel)]="update_reserveData.reserveId" name="edit_reservId">
+    <input type="text" [(ngModel)]="update_reserveData.campusId" name="edit_campusId">
     <p>{{reserveData.id}}</p>
   </div>
 </ng-container>
 <button (click)="add()">add!</button>
+<p>{{update_reserveData.reserveId}}</p>
+<p>{{update_reserveData.campusId}}</p>

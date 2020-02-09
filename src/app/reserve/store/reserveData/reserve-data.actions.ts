@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Update } from '@ngrx/entity';
 
 import { ReserveData } from '../../../class/reserve-data';
 
@@ -8,6 +8,7 @@ export enum ReserveDataActionTypes {
   LoadReserveDatasSuccess = '[ReserveData] Load ReserveDatas Success',
   LoadReserveDatasFail = '[ReserveData] Load ReserveDatas Fail',
   AddReserveData = '[ReserveData] Add ReserveData',
+  UpdateReserveData = '[ReserveData] Update ReserveData',
   DeleteReserveData = '[ReserveData] Delete ReserveData',
   WriteReserveDataSuccess = '[ReserveData] Write ReserveData Success',
   WriteReserveDataFail = '[ReserveData] Write ReserveData Fail',
@@ -41,6 +42,13 @@ export class AddReserveData implements Action {
   constructor(public payload: { reserveData: ReserveData }) {}
 }
 
+// reserveData編集時のアクション
+export class UpdateReserveData implements Action {
+  readonly type = ReserveDataActionTypes.UpdateReserveData;
+
+  constructor(public payload: { reserveData: Update<ReserveData> }) {}
+}
+
 // reserveData削除時のアクション
 export class DeleteReserveData implements Action {
   readonly type = ReserveDataActionTypes.DeleteReserveData;
@@ -67,6 +75,7 @@ export type ReserveDataActions =
   | LoadReserveDatasSuccess
   | LoadReserveDatasFail
   | AddReserveData
+  | UpdateReserveData
   | DeleteReserveData
   | WriteReserveDataSuccess
   | WriteReserveDataFail;
