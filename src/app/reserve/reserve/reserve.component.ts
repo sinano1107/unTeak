@@ -9,7 +9,7 @@ import * as fromCore from '../../core/store/reducers';
 import * as fromReserve from '../store/reserve/reserve.reducer';
 import { LoadReserves } from '../store/reserve/reserve.actions';
 import * as fromReserveData from '../store/reserveData/reserve-data.reducer';
-import { LoadReserveDatas, AddReserveData } from '../store/reserveData/reserve-data.actions';
+import { LoadReserveDatas, AddReserveData, DeleteReserveData } from '../store/reserveData/reserve-data.actions';
 
 @Component({
   selector: 'app-reserve',
@@ -21,7 +21,6 @@ export class ReserveComponent implements OnInit {
   public session: User;
   public reserves: Observable<Reserve[]>;
   public reserveDatas: Observable<ReserveData[]>;
-  public reserveIds: Observable<string[] | number[]>;
 
   constructor(private reserve: Store<fromReserve.State>,
               private store: Store<fromCore.State>,
@@ -33,7 +32,6 @@ export class ReserveComponent implements OnInit {
       })
     this.reserves = this.reserve.select(fromReserve.selectAllReserves);
     this.reserveDatas = this.reserveData.select(fromReserveData.selectAllReserveDatas);
-    this.reserveIds = this.reserve.select(fromReserve.selectReserveIds);
   }
 
   ngOnInit() {
@@ -44,6 +42,12 @@ export class ReserveComponent implements OnInit {
   add() {
     this.store.dispatch(new AddReserveData({
       reserveData: new ReserveData('x', 'y', '4')
+    }))
+  }
+
+  delete(id: string) {
+    this.store.dispatch(new DeleteReserveData({
+      id: id
     }))
   }
 

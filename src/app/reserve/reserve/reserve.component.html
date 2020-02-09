@@ -4,4 +4,10 @@
   <p>{{reserve.id}}</p>
 </ng-container>
 <hr>
+<ng-container *ngFor="let reserveData of reserveDatas | async">
+  <div>
+    <button (click)="delete(reserveData.id)">delete!</button>
+    <p>{{reserveData.id}}</p>
+  </div>
+</ng-container>
 <button (click)="add()">add!</button>

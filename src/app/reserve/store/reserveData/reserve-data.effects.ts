@@ -6,7 +6,6 @@ import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { Community } from '../../../class/community';
-import { Reserve } from '../../../class/reserve';
 import { ReserveData } from '../../../class/reserve-data';
 import {
   ReserveDataActionTypes,
@@ -14,6 +13,7 @@ import {
   LoadReserveDatasSuccess,
   LoadReserveDatasFail,
   AddReserveData,
+  DeleteReserveData,
   WriteReserveDataSuccess,
   WriteReserveDataFail,
 } from './reserve-data.actions';
@@ -77,6 +77,25 @@ export class ReserveDataEffects {
           .add(reserveData.deserialize())
           .then(() => new WriteReserveDataSuccess())
           .catch(() => new WriteReserveDataFail({ error: 'failed.to add' }));
+      })
+    )
+
+  // reserveData削除時のエフェクト
+  @Effect()
+  deleteReserveData: Observable<Action> =
+    this.actions$.pipe(
+      ofType<DeleteReserveData>(ReserveDataActionTypes.DeleteReserveData),
+      map(action => action.payload.id),
+      switchMap((id: string) => {
+        return this.db.collection('communities')
+          .doc('g3Xnp6T1S9xwsDhZLyYZ')
+          .collection('reserveDatas')
+          .doc(id)
+          .delete()
+          .then(() => {
+            return new WriteReserveDataSuccess();
+          })
+          .catch(() => new WriteReserveDataFail({ error: 'failed to delete' }));
       })
     )
 

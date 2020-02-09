@@ -8,6 +8,7 @@ export enum ReserveDataActionTypes {
   LoadReserveDatasSuccess = '[ReserveData] Load ReserveDatas Success',
   LoadReserveDatasFail = '[ReserveData] Load ReserveDatas Fail',
   AddReserveData = '[ReserveData] Add ReserveData',
+  DeleteReserveData = '[ReserveData] Delete ReserveData',
   WriteReserveDataSuccess = '[ReserveData] Write ReserveData Success',
   WriteReserveDataFail = '[ReserveData] Write ReserveData Fail',
 }
@@ -40,6 +41,13 @@ export class AddReserveData implements Action {
   constructor(public payload: { reserveData: ReserveData }) {}
 }
 
+// reserveData削除時のアクション
+export class DeleteReserveData implements Action {
+  readonly type = ReserveDataActionTypes.DeleteReserveData;
+
+  constructor(public payload: { id: string }) {}
+}
+
 // reserveData書き換え・追加成功時のアクション
 export class WriteReserveDataSuccess implements Action {
   readonly type = ReserveDataActionTypes.WriteReserveDataSuccess;
@@ -59,5 +67,6 @@ export type ReserveDataActions =
   | LoadReserveDatasSuccess
   | LoadReserveDatasFail
   | AddReserveData
+  | DeleteReserveData
   | WriteReserveDataSuccess
   | WriteReserveDataFail;
