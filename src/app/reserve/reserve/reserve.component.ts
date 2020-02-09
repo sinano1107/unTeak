@@ -9,7 +9,7 @@ import * as fromCore from '../../core/store/reducers';
 import * as fromReserve from '../store/reserve/reserve.reducer';
 import { LoadReserves } from '../store/reserve/reserve.actions';
 import * as fromReserveData from '../store/reserveData/reserve-data.reducer';
-import { LoadReserveDatas } from '../store/reserveData/reserve-data.actions';
+import { LoadReserveDatas, AddReserveData } from '../store/reserveData/reserve-data.actions';
 
 @Component({
   selector: 'app-reserve',
@@ -39,6 +39,12 @@ export class ReserveComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadReserves({ reserves: [] }));
     this.store.dispatch(new LoadReserveDatas({ reserveDatas: [] }));
+  }
+
+  add() {
+    this.store.dispatch(new AddReserveData({
+      reserveData: new ReserveData('x', 'y', '4')
+    }))
   }
 
 }

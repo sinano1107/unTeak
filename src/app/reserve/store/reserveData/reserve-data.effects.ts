@@ -13,6 +13,9 @@ import {
   LoadReserveDatas,
   LoadReserveDatasSuccess,
   LoadReserveDatasFail,
+  AddReserveData,
+  WriteReserveDataSuccess,
+  WriteReserveDataFail,
 } from './reserve-data.actions';
 
 
@@ -24,7 +27,7 @@ export class ReserveDataEffects {
 
   // reserveDatas読み込み時のエフェクト
   @Effect()
-  LoadReserveDatas$: Observable<Action> =
+  LoadReserveData$: Observable<Action> =
     this.actions$.pipe(
       ofType<LoadReserveDatas>(ReserveDataActionTypes.LoadReserveDatas),
       map(action => action.payload.reserveDatas),
@@ -33,16 +36,6 @@ export class ReserveDataEffects {
         return this.db.collection<Community>('communities', ref => {
           return ref.where("name", "==", "N中新宿キャンパス");
         }).snapshotChanges()
-
-
-
-        // コミュニティIDを取得
-        /*const communityId = this.db.collection<Community>('communities', ref => {
-          return ref.where("name", "==", "N中新宿キャンパス");
-        }).snapshotChanges().subscribe((communities) => {
-          return communities[0].payload.doc.id;
-        })
-        return of({reservesId, communityId});*/
       }),
 
       switchMap((communities) => {
@@ -55,40 +48,47 @@ export class ReserveDataEffects {
             console.debug('reserveData',reserveData);
             const data = reserveData.payload.doc.data();
             const id = reserveData.payload.doc.id;
-            return new ReserveData(id, data.reserveId, data.uid, data.campusId);
+            return new ReserveData(data.reserveId, data.uid, data.campusId, id);
           })),
           map((result: ReserveData[]) => {
             console.debug('result', result);
             return new LoadReserveDatasSuccess({
               reserveDatas: result
             })
-          })
+          }),
+          catchError(this.handleReservesError(
+            'fetchReserveDatas', new LoadReserveDatasFail
+          ))
         )
       })
-
-      /*switchMap((ids) => {
-        console.debug('ids', ids);
-        // reservesDataを取得
-        const reserveDatas = this.db.collection<Community>('communities')
-          .doc(ids.communityId)
-            .collection<Reserve>('reserves')
-              .doc(ids.reservesId)
-                .collection<ReserveData>('data').snapshotChanges()
-        return reserveDatas.pipe(
-          map((reserveDatas) => reserveDatas.map((reserveData) => {
-            console.debug('reserveData', reserveData);
-            const data = reserveData.payload.doc.data();
-            const id = reserveData.payload.doc.id;
-            return new ReserveData(id, data.uid, data.campusId);
-          })),
-          map((result) => {
-            console.debug('result', result);
-            return new LoadReserveDatasSuccess({
-              reserveDatas: [new ReserveDatas(ids.reservesId, result)]
-            })
-          })
-        )*/
-
     )
 
+  // reserveData追加時のエフェクト
+  @Effect()
+  AddReserveData$: Observable<Action> =
+    this.actions$.pipe(
+      ofType<AddReserveData>(ReserveDataActionTypes.AddReserveData),
+      map(action => action.payload.reserveData),
+      switchMap((reserveData: ReserveData) => {
+        console.debug('reserveData', reserveData);
+        return this.db.collection('communities')
+          .doc('g3Xnp6T1S9xwsDhZLyYZ')
+          .collection('reserveDatas')
+          .add(reserveData.deserialize())
+          .then(() => new WriteReserveDataSuccess())
+          .catch(() => new WriteReserveDataFail({ error: 'failed.to add' }));
+      })
+    )
+
+  // エラー発生時の処理
+  private handleReservesError<T>(operation = 'operation', result: T) {
+    return (error: any): Observable<T> => {
+
+      // 失敗した処理の名前、エラーログをコンソールに出力
+      console.error(`${operation} failed: ${error.message}`);
+
+      // 結果を返して、アプリを持続可能にする
+      return of(result as T);
+    }
+  }
 }

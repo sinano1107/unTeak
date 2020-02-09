@@ -38,6 +38,24 @@ export function reducer(
       return { ...state, loading: false };
     }
 
+    // reserveData追加時のアクション
+    case ReserveDataActionTypes.AddReserveData: {
+      console.debug('reserveData追加時のアクション(AddReserveData)実行');
+      return { ...state, loading: false };
+    }
+
+    // reserveData書き換え・追加成功時のアクション
+    case ReserveDataActionTypes.WriteReserveDataSuccess: {
+      console.debug('reserveData書き換え・追加成功時のアクション(WriteReserveDataSuccess)実行');
+      return { ...state, loading: false };
+    }
+
+    // reserveData書き換え・追加失敗時のアクション
+    case ReserveDataActionTypes.WriteReserveDataFail: {
+      console.debug('reserveData書き換え・追加失敗時のアクション(WriteReserveDataFail)実行');
+      return { ...state, loading: false };
+    }
+
     default: {
       return state;
     }
