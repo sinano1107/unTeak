@@ -4,11 +4,9 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Update } from '@ngrx/entity';
 
-import { Reserve } from '../../class/reserve';
-import { ReserveData } from '../../class/reserve-data';
-import { Community } from '../../class/comunity';
+import { Reserve } from '../../../class/reserve';
+import { Community } from '../../../class/community';
 import {
   ReserveActionTypes,
   LoadReserves,
@@ -25,7 +23,7 @@ export class ReserveEffects {
   constructor(private actions$: Actions,
               private db: AngularFirestore) {}
 
-  // 予約データ読み込み時のアクション
+  // reserves読み込み時のエフェクト
   @Effect()
   loadReserves$: Observable<Action> =
     this.actions$.pipe(
@@ -33,7 +31,9 @@ export class ReserveEffects {
       map(action => action.payload.reserves),
       // communitiesを取得
       switchMap(() => {
-        const communities = this.db.collection<Community>('communities').snapshotChanges();
+        const communities = this.db.collection<Community>('communities', ref => {
+          return ref.where("name", "==", "N中新宿キャンパス")
+        }).snapshotChanges();
         return communities;
       }),
 
