@@ -10,6 +10,7 @@ import * as fromReserve from '../store/reserve/reserve.reducer';
 import { LoadReserves } from '../store/reserve/reserve.actions';
 import * as fromReserveData from '../store/reserveData/reserve-data.reducer';
 import { LoadReserveDatas, AddReserveData, UpdateReserveData, DeleteReserveData } from '../store/reserveData/reserve-data.actions';
+import { ReserveDataService } from '../service/reserve-data.service';
 
 @Component({
   selector: 'app-reserve',
@@ -25,7 +26,8 @@ export class ReserveComponent implements OnInit {
 
   constructor(private reserve: Store<fromReserve.State>,
               private store: Store<fromCore.State>,
-              private reserveData: Store<fromCore.State>,) {
+              private reserveData: Store<fromReserveData.State>,
+              private reserveDataService: ReserveDataService) {
     this.store.select(fromCore.getSession)
       .subscribe(data => {
         console.debug('session',data);
@@ -41,22 +43,20 @@ export class ReserveComponent implements OnInit {
   }
 
   add() {
-    this.store.dispatch(new AddReserveData({
-      reserveData: new ReserveData('x', 'y', '4')
-    }))
+    this.reserveDataService.add(new ReserveData('最初の予約','x','最初のキャンパス'));
   }
 
   update(id: string, reserveData: ReserveData) {
     this.update_reserveData = new ReserveData('','','');
-    this.store.dispatch(new UpdateReserveData({
-      reserveData: {id: id, changes: reserveData}
-    }))
+    this.reserveDataService.update(id, reserveData);
   }
 
   delete(id: string) {
-    this.store.dispatch(new DeleteReserveData({
-      id: id
-    }))
+    this.reserveDataService.delete(id);
+  }
+
+  reservation() {
+    this.reserveDataService.reservation('x', new ReserveData('二番目の予約','x','二番目のキャンパス'));
   }
 
 }

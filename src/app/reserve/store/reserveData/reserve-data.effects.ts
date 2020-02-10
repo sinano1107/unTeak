@@ -47,13 +47,13 @@ export class ReserveDataEffects {
             .collection<ReserveData>('reserveDatas').snapshotChanges()
         return reserveDatas.pipe(
           map((reserveDatas) => reserveDatas.map((reserveData) => {
-            console.debug('reserveData',reserveData);
+            //console.debug('reserveData',reserveData);
             const data = reserveData.payload.doc.data();
             const id = reserveData.payload.doc.id;
             return new ReserveData(data.reserveId, data.uid, data.campusId, id);
           })),
           map((result: ReserveData[]) => {
-            console.debug('result', result);
+            //console.debug('result', result);
             return new LoadReserveDatasSuccess({
               reserveDatas: result
             })
@@ -72,7 +72,7 @@ export class ReserveDataEffects {
       ofType<AddReserveData>(ReserveDataActionTypes.AddReserveData),
       map(action => action.payload.reserveData),
       switchMap((reserveData: ReserveData) => {
-        console.debug('reserveData', reserveData);
+        //console.debug('reserveData', reserveData);
         return this.db.collection('communities')
           .doc('g3Xnp6T1S9xwsDhZLyYZ')
           .collection('reserveDatas')

@@ -49,13 +49,13 @@ export class ReserveEffects {
         // reservesを展開してLoadReservesSuccesかFailに送る
         return reserves.pipe(
           map((reserves) => reserves.map((reserve) => {
-            console.debug(reserve);
+            //console.debug(reserve);
             const data = reserve.payload.doc.data();
             const id = reserve.payload.doc.id;
             return new Reserve(id, data.compulsion, data.date);
           })),
           map((result: Reserve[]) => {
-            console.debug('result', result);
+            //console.debug('result', result);
             return new LoadReservesSuccess({
               reserves: result
             })

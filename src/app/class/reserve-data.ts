@@ -6,7 +6,7 @@ export class ReserveData {
   uid: string;
   campusId: string;
 
-  constructor(reserveId: string , uid: string, campusId: string, id?: string) {
+  constructor(reserveId: string, uid: string, campusId: string, id?: string) {
     this.id = id;
     this.reserveId = reserveId;
     this.uid = uid;
