@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 
 import { CoreModule } from './core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // ルート
 const appRoutes: Routes = [
@@ -32,6 +33,7 @@ const appRoutes: Routes = [
     AngularFirestoreModule,
     AngularFireAuthModule,
     CoreModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
