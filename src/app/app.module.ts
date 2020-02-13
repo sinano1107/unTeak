@@ -9,13 +9,15 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
+import { AuthGuard } from './core/guard/auth.guard';
+import { LoginGuard } from './core/guard/login.guard';
 
 import { CoreModule } from './core/core.module';
 
 // ルート
 const appRoutes: Routes = [
-  { path: 'account', loadChildren: './account/account.module#AccountModule' },
-  { path: '', loadChildren: './reserve/reserve.module#ReserveModule' },
+  { path: 'account', loadChildren: './account/account.module#AccountModule', canActivate: [LoginGuard], },
+  { path: '', loadChildren: './reserve/reserve.module#ReserveModule', canActivate: [AuthGuard], },
   { path: '**', component: PageNotFoundComponent }
 ]
 
