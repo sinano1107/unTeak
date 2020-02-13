@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
@@ -26,7 +28,9 @@ import { User as fbUser } from 'firebase';
 export class SessionEffects {
 
   constructor(private actions$: Actions,
-              private afAuth: AngularFireAuth,) {}
+              private afAuth: AngularFireAuth,
+              private afs: AngularFirestore,
+              private router: Router) {}
 
   // 読み込み時の処理
   @Effect()
@@ -43,12 +47,36 @@ export class SessionEffects {
                 // ユーザーが存在しなかった場合は、空のセッションを返す
                 return new LoadSessionsSuccess({ session: new Session() });
               } else {
-                return new LoadSessionsSuccess({ session: new Session(
-                                                new User(result.uid, result.displayName))});
+                return result;
               }
             }),
             catchError(this.handleLoginError<LoadSessionsFail>(
               'fetchAuth', new LoadSessionsFail()
+            ))
+          )
+      }),
+      // ユーザーの認証化情報を取得
+      switchMap((auth: fbUser | LoadSessionsSuccess | LoadSessionsFail) => {
+        // ユーザーが存在しなかった場合は、認証化情報を取得しない
+        if (auth instanceof LoadSessionsSuccess || auth instanceof LoadSessionsFail) {
+          return of(auth);
+        }
+        // ユーザーが存在した場合
+        return this.afs
+          .collection('users')
+          .doc(auth.uid)
+          .valueChanges()
+          .pipe(
+            take(1),
+            map((result: User) => {
+              return new LoadSessionsSuccess({
+                session: new Session(
+                  new User(auth.uid, result.name)
+                )
+              })
+            }),
+            catchError(this.handleLoginError<LoadSessionsFail>(
+              'fetchUser', new LoadSessionsFail()
             ))
           )
       })
@@ -72,14 +100,34 @@ export class SessionEffects {
               this.afAuth.auth.signOut()
               return new LoginSessionsSuccess({ session: new Session() });
             } else {
-              return new LoginSessionsSuccess({ session: new Session(
-                                                new User(auth.user.uid, auth.user.displayName)) });
+              return auth.user;
             }
           })
           .catch(err => {
             alert('ログインに失敗しました。\n' + err);
             return new LoginSessionsFail({ error: err });
           });
+      }),
+      switchMap((auth: fbUser | LoginSessionsSuccess | LoginSessionsFail) => {
+        // ユーザーが存在しなかった場合は、空のセッションを返す
+        if (auth instanceof LoginSessionsSuccess || auth instanceof LoginSessionsFail) {
+          return of(auth);
+        }
+        return this.afs
+          .collection('users')
+          .doc(auth.uid)
+          .valueChanges()
+          .pipe(
+            take(1),
+            map((result: User) => {
+              this.router.navigate(['/']);
+              return new LoginSessionsSuccess({
+                session: new Session(
+                  new User(auth.uid, result.name)
+                )
+              })
+            })
+          )
       })
     )
 
