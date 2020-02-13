@@ -6,6 +6,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
@@ -34,6 +35,7 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     CoreModule,
     BrowserAnimationsModule,
+    MatSidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
