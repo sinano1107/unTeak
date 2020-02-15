@@ -39,25 +39,25 @@ export class ReserveDataService {
   }
 
   // 予約関数
-  async reservation(uid: string, addData: ReserveData) {
-    const id = await this.searchMyReserveData(uid)
+  async reservation(uid: string, reserveId: string, campusId: string) {
+    const id = await this.searchMyReserveData(uid, reserveId);
 
     if (id != '' && typeof(id) == 'string') {
       // 存在したら
-      this.update(id, addData);
+      this.update(id, new ReserveData(reserveId, uid, campusId));
     } else {
       // 存在しなかったら
-      this.add(addData);
+      this.add(new ReserveData(reserveId, uid, campusId));
     }
   }
 
   // reserveDatasにuidさんのデータがあるか調べる
-  searchMyReserveData(uid: string) {
+  searchMyReserveData(uid: string, reserveId: string) {
     return new Promise<String>(resolve => {
       this.reserveDatas.forEach((reserveDatas) => {
         //console.debug('reserveDatas', reserveDatas);
         reserveDatas.forEach((reserveData) => {
-          if (reserveData.uid == uid) {
+          if (reserveData.uid == uid && reserveData.reserveId == reserveId) {
             // 存在したら
             resolve(reserveData.id);
           }

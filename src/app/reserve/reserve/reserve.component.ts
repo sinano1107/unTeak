@@ -43,7 +43,7 @@ export class ReserveComponent implements OnInit {
   }
 
   add() {
-    this.reserveDataService.add(new ReserveData('最初の予約','x','最初のキャンパス'));
+    this.reserveDataService.add(new ReserveData('予約x','x','最初のキャンパス'));
   }
 
   update(id: string, reserveData: ReserveData) {
@@ -56,7 +56,7 @@ export class ReserveComponent implements OnInit {
   }
 
   reservation() {
-    this.reserveDataService.reservation('x', new ReserveData('二番目の予約','x','二番目のキャンパス'));
+    this.reserveDataService.reservation('x', '予約x', '二番目のキャンパス');
   }
 
 }
