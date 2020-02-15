@@ -6,10 +6,12 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
+import { ImageModule } from './image/image.module';
 import { AuthGuard } from './core/guard/auth.guard';
 import { LoginGuard } from './core/guard/login.guard';
 
@@ -38,8 +40,9 @@ const appRoutes: Routes = [
     CoreModule,
     BrowserAnimationsModule,
     MatSidenavModule,
+    ImageModule
   ],
-  providers: [],
+  providers: [AngularFireStorage],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
