@@ -71,7 +71,7 @@ export class SessionEffects {
             map((result: User) => {
               return new LoadSessionsSuccess({
                 session: new Session(
-                  new User(auth.uid, result.name)
+                  new User(auth.uid, result.name, result.icon, result.back)
                 )
               })
             }),
@@ -123,7 +123,7 @@ export class SessionEffects {
               this.router.navigate(['/']);
               return new LoginSessionsSuccess({
                 session: new Session(
-                  new User(auth.uid, result.name)
+                  new User(auth.uid, result.name, result.icon, result.back)
                 )
               })
             })

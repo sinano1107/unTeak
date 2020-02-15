@@ -8,7 +8,7 @@ export class Session {
 
   constructor(init?: User) {
     this.login = (!!init);
-    this.user = (init) ? new User(init.uid, init.name) : new User();
+    this.user = (init) ? new User(init.uid, init.name, init.icon, init.back) : new User();
   }
 
   reset(): Session {

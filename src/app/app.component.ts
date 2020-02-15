@@ -13,14 +13,14 @@ import * as fromCore from './core/store/reducers';
 export class AppComponent {
   title = 'unTeak';
   isOpen = false;
-  session_data: Session
+  session_data: Session;
 
   constructor(private session: SessionService,
               private store: Store<fromCore.State>) {
     this.session.checkLogin();
     this.store.select(fromCore.getSession)
       .subscribe(data => {
-        this.session_data = data;
+          this.session_data = data;
       })
   }
 }
