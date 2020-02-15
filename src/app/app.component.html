@@ -38,7 +38,6 @@
         <router-outlet></router-outlet>
         session{{ session_data.user.uid }}
       </div>
-      <app-image [imageId]="'/icon.png'" [classItem]="'h-20 w-20 rounded-full'"></app-image>
     </mat-sidenav-content>
 
     <!--sidenav-->
@@ -46,9 +45,9 @@
 
       <!--mydata-->
 				<div class="text-gray-800">
-					<img src="http://alpha.backer.id/assets/images/bg/kucingmalas.jpeg" class="h-32 w-full object-cover">
+          <app-image [imageId]="'/mainimg.jpg'" [classItem]="'h-32 w-full object-cover'"></app-image>
 					<div class="flex justify-center">
-						<img src="http://alpha.backer.id//assets/images/bg/avatar-default3.jpg" class="rounded-full -mt-6 border-4 object-center object-cover border-white mr-2 h-16 w-16">
+            <app-image [imageId]="'/icon.png'" [classItem]="'rounded-full -mt-6 border-4 object-center object-cover border-white mr-2 h-16 w-16'"></app-image>
 					</div>
 					<div class="py-2 px-2">
 						<div class=" font-bold font-title text-center">{{ session_data.user.name }}</div>
