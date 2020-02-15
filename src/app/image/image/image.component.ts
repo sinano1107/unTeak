@@ -19,7 +19,7 @@ export class ImageComponent implements OnInit {
 
   images: Observable<{}>;
   public url = '';
-  public isLoading = true;
+  isLoading = true;
 
   constructor(private image: ImageService,
               private imageStore: Store<fromImage.State>,
