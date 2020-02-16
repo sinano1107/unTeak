@@ -1,0 +1,5 @@
+<div class="mt-20">
+  <ng-container *ngFor="let reserve of reserves | async">
+    <app-date-card [reserveId]=reserve.id [compulsion]="reserve.compulsion" [date]="reserve.date"></app-date-card>
+  </ng-container>
+</div>

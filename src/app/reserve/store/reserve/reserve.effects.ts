@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { Reserve } from '../../../class/reserve';
+import { Reserve, ReserveDate } from '../../../class/reserve';
 import { Community } from '../../../class/community';
 import {
   ReserveActionTypes,
@@ -52,7 +52,7 @@ export class ReserveEffects {
             //console.debug(reserve);
             const data = reserve.payload.doc.data();
             const id = reserve.payload.doc.id;
-            return new Reserve(id, data.compulsion, data.date);
+            return new Reserve(id, data.compulsion, new ReserveDate(String(data.date)).transform());
           })),
           map((result: Reserve[]) => {
             //console.debug('result', result);

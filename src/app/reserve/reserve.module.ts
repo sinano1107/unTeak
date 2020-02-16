@@ -3,17 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ReserveRoutingModule } from './reserve-routing.module';
-import { ReserveComponent } from './reserve/reserve.component';
 import { StoreModule } from '@ngrx/store';
 import * as fromReserve from './store/reserve/reserve.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ReserveEffects } from './store/reserve/reserve.effects';
 import * as fromReserveData from './store/reserveData/reserve-data.reducer';
 import { ReserveDataEffects } from './store/reserveData/reserve-data.effects';
+import { PickDateComponent } from './pick-date/pick-date.component';
+import { DateCardComponent } from './pick-date/date-card/date-card.component';
 
 
 @NgModule({
-  declarations: [ReserveComponent,],
+  declarations: [PickDateComponent, DateCardComponent,],
   imports: [
     CommonModule,
     FormsModule,
