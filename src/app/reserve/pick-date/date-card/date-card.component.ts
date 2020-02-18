@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { ReserveDate } from '../../../class/reserve';
 
 @Component({
@@ -12,9 +13,13 @@ export class DateCardComponent implements OnInit {
   @Input() compulsion: boolean;
   @Input() date: ReserveDate;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  go() {
+    this.router.navigate(['/pick-campus', this.reserveId]);
   }
 
 }
