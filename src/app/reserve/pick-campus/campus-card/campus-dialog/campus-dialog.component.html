@@ -11,10 +11,10 @@
   <hr class="mt-10">
 
   <div class="mt-5 float-right">
-    <button *ngIf="campusReserveDatas.length!=6 && isMe==''" (click)="reservation()" class="h-10 w-32 border border-blue-400 rounded-full focus:outline-none">
+    <button *ngIf="campusReserveDatas.length!=6 && isMe==''" (click)="reservation()" class="h-10 w-32 border border-blue-400 hover:bg-blue-300 rounded-full focus:outline-none">
       予約する！
     </button>
-    <button *ngIf="isMe" (click)="cancel()" class="h-10 w-32 border border-red-400 rounded-full focus:outline-none">
+    <button *ngIf="isMe" (click)="cancel()" class="h-10 w-32 border border-red-400 hover:bg-red-300 rounded-full focus:outline-none">
       キャンセル
     </button>
     <p *ngIf="campusReserveDatas.length==6 && isMe==''" class="text-red-400">この席はいっぱいなので予約できません😢</p>
