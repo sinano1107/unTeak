@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // ルート
 const appRoutes: Routes = [
   { path: 'account', loadChildren: './account/account.module#AccountModule', canActivate: [LoginGuard], },
+  { path: 'config', loadChildren: './config/config.module#ConfigModule', canActivate: [AuthGuard], },
   { path: '', loadChildren: './reserve/reserve.module#ReserveModule', canActivate: [AuthGuard], },
   { path: '**', component: PageNotFoundComponent }
 ]

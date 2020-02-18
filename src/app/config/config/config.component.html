@@ -1,0 +1,18 @@
+<p>設定ページ</p>
+{{myData | json}}
+<hr>
+<p>名前</p>
+<input type="text" [(ngModel)]="this.name">{{this.name}}
+<button (click)="nameUpdate()">変更</button>
+<hr>
+<p>アイコン画像</p>
+<div id="input-area">
+  <input type="file" accept="image/*" (change)="onChangeInput($event, 'icon')">
+</div>
+<button (click)="default('icon')">デフォルト</button>
+<hr>
+<p>背景画像</p>
+<div id="input-area">
+  <input type="file" accept="image/*" (change)="onChangeInput($event, 'back')">
+</div>
+<button (click)="default('back')">デフォルト</button>
