@@ -1,5 +1,7 @@
-<div class="mt-20">
-  <ng-container *ngFor="let reserve of reserves | async">
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading" class="mt-20">
+  <ng-container *ngFor="let reserve of reserves">
     <app-date-card [reserveId]=reserve.id [compulsion]="reserve.compulsion" [date]="reserve.date"></app-date-card>
   </ng-container>
+  <p *ngIf="reserves.length==0" class="flex justify-center">日程が決まっていないようです...</p>
 </div>

@@ -17,7 +17,7 @@ export class CampusCardComponent implements OnInit {
   @Input() classItem: string;
   @Input() campusId: string;
   @Input() reserveId: string;
-  campusReserveDatas = [];
+  campusReserveDataCount: number;
   myData: Session;
 
   constructor(private store: Store<fromCore.State>,
@@ -26,10 +26,10 @@ export class CampusCardComponent implements OnInit {
 
   ngOnInit() {
     this.reserveData.select(fromReserveData.selectAllReserveDatas).subscribe((reserveDatas) => {
-      this.campusReserveDatas = []
+      this.campusReserveDataCount = 0;
       reserveDatas.forEach(reserveData => {
         if (reserveData.campusId==this.campusId && reserveData.reserveId==this.reserveId) {
-          this.campusReserveDatas.push(reserveData);
+          this.campusReserveDataCount+=1;
         }
       })
     })

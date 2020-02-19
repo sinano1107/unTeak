@@ -1,5 +1,6 @@
 <body>
-  <mat-sidenav-container class="h-screen">
+  <app-loading *ngIf="session_loading"></app-loading>
+  <mat-sidenav-container *ngIf="!session_loading" class="h-screen">
     <mat-sidenav-content>
       <!--header-->
       <header class="container mx-auto pb-1 text-gray-800">
@@ -40,9 +41,9 @@
 
       <!--mydata-->
 				<div class="text-gray-800">
-          <app-image *ngIf="session_data.user.back!=''" [imageId]="session_data.user.back" [classItem]="'h-32 w-full object-cover'"></app-image>
+          <app-image [imageId]="session_data.user.back" [classItem]="'h-32 w-full object-cover'"></app-image>
 					<div class="flex justify-center">
-            <app-image *ngIf="session_data.user.icon!=''" [imageId]="session_data.user.icon" [classItem]="'rounded-full -mt-6 border-4 object-center object-cover border-white mr-2 h-16 w-16'"></app-image>
+            <app-image [imageId]="session_data.user.icon" [classItem]="'rounded-full -mt-6 border-4 object-center object-cover border-white mr-2 h-16 w-16'"></app-image>
 					</div>
 					<div class="py-2 px-2">
 						<div class=" font-bold font-title text-center">{{ session_data.user.name }}</div>

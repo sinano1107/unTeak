@@ -1,23 +1,26 @@
-<div class="-mt-1">
-  <label>
-    <input class="hidden" type="file" accept="image/*" (change)="onChangeInput($event, 'back')">
-    <app-image *ngIf="myData.back!=''" [imageId]="myData.back" [classItem]="'h-40 w-full object-cover'"></app-image>
-  </label>
-  <div class="flex items-center">
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div class="-mt-1">
     <label>
-      <input class="hidden" type="file" accept="image/*" (change)="onChangeInput($event, 'icon')">
-      <app-image *ngIf="myData.icon!=''" [imageId]="myData.icon" [classItem]="'-mt-8 ml-8 rounded-full object-cover h-24 w-24 shadow-lg'"></app-image>
+      <input class="hidden" type="file" accept="image/*" (change)="onChangeInput($event, 'back')">
+      <app-image *ngIf="myData.back!=''" [imageId]="myData.back" [classItem]="'h-40 w-full object-cover'"></app-image>
     </label>
-    <button *ngIf="myData.icon!='/icon.png'" class="ml-8 p-2 text-sm text-gray-600 bg-green-300 hover:bg-green-400 focus:bg-green-300 focus:outline-none rounded" (click)="default('icon')">デフォルトアイコン</button>
-    <button *ngIf="myData.back!='/mainimg.jpg'" class="ml-2 p-2 text-sm text-gray-600 bg-green-300 hover:bg-green-400 focus:bg-green-300 focus:outline-none rounded" (click)="default('back')">デフォルト背景</button>
+    <div class="flex items-center">
+      <label>
+        <input class="hidden" type="file" accept="image/*" (change)="onChangeInput($event, 'icon')">
+        <app-image *ngIf="myData.icon!=''" [imageId]="myData.icon" [classItem]="'-mt-8 ml-8 rounded-full object-cover h-24 w-24 shadow-lg'"></app-image>
+      </label>
+      <button *ngIf="myData.icon!='/icon.png'" class="ml-8 p-2 text-sm text-gray-600 bg-green-300 hover:bg-green-400 focus:bg-green-300 focus:outline-none rounded" (click)="default('icon')">デフォルトアイコン</button>
+      <button *ngIf="myData.back!='/mainimg.jpg'" class="ml-2 p-2 text-sm text-gray-600 bg-green-300 hover:bg-green-400 focus:bg-green-300 focus:outline-none rounded" (click)="default('back')">デフォルト背景</button>
+    </div>
   </div>
+
+  <hr class="mt-5">
+
+  <div class="mx-3 p-4 flex justify-center">
+    <input class="w-4/5 bg-gray-200 border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-300" type="text" [(ngModel)]="this.name">
+    <button class="ml-2 h-10 w-20 border border-blue-400 rounded-full hover:bg-blue-300 focus:bg-blue-400 focus:outline-none" [ngClass]="(myData.name!=name && this.name!='') ? 'block' : 'hidden'" (click)="nameUpdate()">変更する</button>
+  </div>
+
+  <hr>
 </div>
-
-<hr class="mt-5">
-
-<div class="mx-3 p-4 flex justify-center">
-  <input class="w-4/5 bg-gray-200 border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-300" type="text" [(ngModel)]="this.name">
-  <button class="ml-2 h-10 w-20 border border-blue-400 rounded-full hover:bg-blue-300 focus:bg-blue-400 focus:outline-none" [ngClass]="(myData.name!=name && this.name!='') ? 'block' : 'hidden'" (click)="nameUpdate()">変更する</button>
-</div>
-
-<hr>

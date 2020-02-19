@@ -15,6 +15,7 @@ export class ConfigComponent implements OnInit {
 
   myData: User;
   name: string;
+  loading: boolean;
 
   constructor(private store: Store<fromCore.State>,
               private db: AngularFirestore,
@@ -30,6 +31,7 @@ export class ConfigComponent implements OnInit {
   }
 
   onChangeInput(evt, path: string) {
+    this.loading = true;
     const file: File = evt.target.files[0];
 
     // 保存先,ファイル名を指定
@@ -67,6 +69,7 @@ export class ConfigComponent implements OnInit {
 
   // デフォルト画像に戻す
   default(path: string) {
+    this.loading = true;
     this.afs.storage.ref(`/${this.myData.uid}/${path}`).delete();
     if (path=='icon') {
       this.update('icon.png', 'icon');

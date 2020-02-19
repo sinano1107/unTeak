@@ -15,7 +15,8 @@ export class AppComponent {
   title = 'unTeak';
   isOpen = false;
   session_data: Session;
-  date = new Date()
+  session_loading: boolean;
+  date = new Date();
 
   constructor(private session: SessionService,
               private router: Router,
@@ -24,6 +25,10 @@ export class AppComponent {
     this.store.select(fromCore.getSession)
       .subscribe(data => {
           this.session_data = data;
+      })
+    this.store.select(fromCore.getLoading)
+      .subscribe(loading => {
+        this.session_loading = loading;
       })
   }
 

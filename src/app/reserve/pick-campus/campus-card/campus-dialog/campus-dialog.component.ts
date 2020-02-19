@@ -17,6 +17,7 @@ export class CampusDialogComponent implements OnInit {
   isMe = ''; // 自分のデータがあったらそのid, なかったら空
   campusReserveDatas = [];
   compulsion = true;
+  loading: boolean;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data : any,
               public matDialogRef : MatDialogRef<CampusDialogComponent>,
@@ -33,8 +34,9 @@ export class CampusDialogComponent implements OnInit {
 
     this.reserveData.select(fromReserveData.selectAllReserveDatas).subscribe(
       reserveDatas => {
+        reserveDatas.length==0 ? this.loading=false : this.loading=true;
         this.isMe = ''; // isMeリセット
-        reserveDatas.forEach(reserveData => {
+        /*reserveDatas.forEach(reserveData => {
           if (reserveData.campusId==this.data.campusId && reserveData.reserveId==this.data.reserveId) {
             this.campusReserveDatas.push(reserveData);
             // 自分の予約データだったら
@@ -42,7 +44,20 @@ export class CampusDialogComponent implements OnInit {
               this.isMe = reserveData.id;
             }
           }
-        })
+        })*/
+        for (let i=0; i<reserveDatas.length; i++) {
+          const reserveData = reserveDatas[i];
+          if (reserveData.campusId==this.data.campusId && reserveData.reserveId==this.data.reserveId) {
+            this.campusReserveDatas.push(reserveData);
+            // 自分の予約データだったら
+            if (reserveData.uid == this.data.myUid) {
+              this.isMe = reserveData.id;
+            }
+          }
+          if (i==reserveDatas.length-1) {
+            this.loading = false;
+          }
+        }
     })
   }
 

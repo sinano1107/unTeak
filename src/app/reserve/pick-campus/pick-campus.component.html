@@ -1,27 +1,30 @@
-<div *ngIf="isExistence">
-  <div class="mx-5 mt-20 mb-10">
-    <div class="bg-blue-300 text-center rounded p-2">まど</div>
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <div *ngIf="isExistence">
+    <div class="mx-5 mt-20 mb-10">
+      <div class="bg-blue-300 text-center rounded p-2">まど</div>
 
-    <div class="grid grid-cols-3 gap-4">
-      <ng-container *ngFor="let i of x">
-        <app-campus-card [classItem]="'rounded shadow-lg text-center p-10 mt-5'" [campusId]="i" [reserveId]="reserveId">
-        </app-campus-card>
-      </ng-container>
+      <div class="grid grid-cols-3 gap-4">
+        <ng-container *ngFor="let i of x">
+          <app-campus-card [classItem]="'rounded shadow-lg text-center p-10 mt-5'" [campusId]="i" [reserveId]="reserveId">
+          </app-campus-card>
+        </ng-container>
+      </div>
+
+      <hr class="mt-5">
+      <hr><hr><hr><hr><hr>
+
+      <div class="grid grid-cols-3 gap-4">
+        <ng-container *ngFor="let i of y">
+          <app-campus-card [classItem]="'rounded shadow-lg text-center p-10 mt-5'" [campusId]="i" [reserveId]="reserveId">
+          </app-campus-card>
+        </ng-container>
+      </div>
+
+      <div class="bg-orange-300 text-center rounded p-2 mt-5">カウンター</div>
+
     </div>
-
-    <hr class="mt-5">
-    <hr><hr><hr><hr><hr>
-
-    <div class="grid grid-cols-3 gap-4">
-      <ng-container *ngFor="let i of y">
-        <app-campus-card [classItem]="'rounded shadow-lg text-center p-10 mt-5'" [campusId]="i" [reserveId]="reserveId">
-        </app-campus-card>
-      </ng-container>
-    </div>
-
-    <div class="bg-orange-300 text-center rounded p-2 mt-5">カウンター</div>
-
   </div>
-</div>
 
-<p *ngIf="!isExistence">そのような予約ページは存在しません</p>
+  <p *ngIf="!isExistence">そのような予約ページは存在しません</p>
+</div>

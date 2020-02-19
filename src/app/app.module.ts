@@ -12,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './error/page-not-found/page-not-found.component';
 import { ImageModule } from './image/image.module';
+import { LoadingModule } from './loading/loading.module';
 import { AuthGuard } from './core/guard/auth.guard';
 import { LoginGuard } from './core/guard/login.guard';
 
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
     CoreModule,
     BrowserAnimationsModule,
     MatSidenavModule,
-    ImageModule
+    ImageModule,
+    LoadingModule
   ],
   providers: [AngularFireStorage],
   bootstrap: [AppComponent]

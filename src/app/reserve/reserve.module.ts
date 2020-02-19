@@ -18,6 +18,7 @@ import { CampusCardComponent } from './pick-campus/campus-card/campus-card.compo
 import { CampusDialogComponent } from './pick-campus/campus-card/campus-dialog/campus-dialog.component';
 import { UserChipComponent } from './pick-campus/campus-card/campus-dialog/user-chip/user-chip.component';
 import { ImageModule } from '../image/image.module';
+import { LoadingModule } from '../loading/loading.module';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ImageModule } from '../image/image.module';
     StoreModule.forFeature('reserveData', fromReserveData.reducer),
     MatDialogModule,
     MatChipsModule,
-    ImageModule
+    ImageModule,
+    LoadingModule
   ],
   entryComponents: [
     CampusDialogComponent

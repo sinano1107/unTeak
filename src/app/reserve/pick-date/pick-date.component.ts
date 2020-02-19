@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { Reserve } from '../../class/reserve';
 import { Store } from '@ngrx/store';
@@ -13,11 +12,21 @@ import { LoadReserves } from '../store/reserve/reserve.actions';
 })
 export class PickDateComponent implements OnInit {
 
-  reserves: Observable<Reserve[]>;
+  reserves: Reserve[];
+  loading: boolean;
 
   constructor(private reserve: Store<fromReserve.State>) {
     this.reserve.dispatch(new LoadReserves({ reserves: [] }));
-    this.reserves = this.reserve.select(fromReserve.selectAllReserves);
+    this.reserve.select(fromReserve.selectAllReserves).subscribe(
+      reserves => {
+        this.reserves = reserves;
+      }
+    );
+    this.reserve.select(fromReserve.getReserveLoading).subscribe(
+      loading => {
+        this.loading = loading;
+      }
+    )
   }
 
   ngOnInit() {
