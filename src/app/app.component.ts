@@ -31,4 +31,10 @@ export class AppComponent {
     this.isOpen = false;
     this.router.navigate([link]);
   }
+
+  logout() {
+    this.isOpen = false;
+    this.session.logout();
+    this.router.navigate(['/account/login']);
+  }
 }

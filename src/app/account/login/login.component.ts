@@ -20,7 +20,9 @@ export class LoginComponent implements OnInit {
 
   submitLogin(e: Event) {
     e.preventDefault();
-    this.sessionService.login(this.account);
+    if (this.account.email!='' && this.account.password!='') {
+      this.sessionService.login(this.account);
+    }
   }
 
 }
