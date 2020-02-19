@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { ReserveDataService } from '../../../service/reserve-data.service';
 import { Store } from '@ngrx/store';
 import * as fromReserveData from '../../../store/reserveData/reserve-data.reducer';
+import * as fromReserve from '../../../store/reserve/reserve.reducer';
 
 @Component({
   selector: 'app-campus-dialog',
@@ -15,13 +16,21 @@ export class CampusDialogComponent implements OnInit {
   // dialogInputでcampusId, reserveId, myUidを受け取っています。
   isMe = ''; // 自分のデータがあったらそのid, なかったら空
   campusReserveDatas = [];
+  compulsion = true;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data : any,
               public matDialogRef : MatDialogRef<CampusDialogComponent>,
               private reserveData: Store<fromReserveData.State>,
-              private reserveDataService: ReserveDataService) { }
+              private reserveDataService: ReserveDataService,
+              private reserve: Store<fromReserve.State>) { }
 
   ngOnInit() {
+    this.reserve.select(fromReserve.selectReserveEntities).subscribe(
+      reserves => {
+        this.compulsion = reserves[this.data.reserveId].compulsion;
+      }
+    )
+
     this.reserveData.select(fromReserveData.selectAllReserveDatas).subscribe(
       reserveDatas => {
         this.isMe = ''; // isMeリセット

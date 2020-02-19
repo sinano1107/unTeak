@@ -49,3 +49,4 @@ export const selectReserve = createFeatureSelector<State>('reserve');
 export const getReserveLoading = createSelector(selectReserve, state => state.loading);
 export const selectAllReserves = createSelector(selectReserve, selectAll);
 export const selectReserveIds = createSelector(selectReserve, selectIds);
+export const selectReserveEntities = createSelector(selectReserve, selectEntities);

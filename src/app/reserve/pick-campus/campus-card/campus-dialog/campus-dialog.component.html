@@ -10,7 +10,7 @@
 
   <hr class="mt-10">
 
-  <div class="mt-5 float-right">
+  <div *ngIf="!compulsion" class="mt-5 float-right">
     <button *ngIf="campusReserveDatas.length!=6 && isMe==''" (click)="reservation()" class="h-10 w-32 border border-blue-400 hover:bg-blue-300 rounded-full focus:outline-none">
       予約する！
     </button>
