@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { ImageModule } from '../image/image.module';
 import { ConfigRoutingModule } from './config-routing.module';
 import { ConfigComponent } from './config/config.component';
 
@@ -11,7 +12,8 @@ import { ConfigComponent } from './config/config.component';
   imports: [
     CommonModule,
     ConfigRoutingModule,
-    FormsModule
+    FormsModule,
+    ImageModule
   ]
 })
 export class ConfigModule { }
