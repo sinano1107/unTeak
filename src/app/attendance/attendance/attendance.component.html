@@ -1,0 +1,13 @@
+<p *ngIf="input_at_Code!=true_at_Code">このURLは不正です。</p>
+<p *ngIf="isAttended">あなたは登校済みです</p>
+
+<button *ngIf="(input_at_Code==true_at_Code) && !isAttended" (click)="attendance()">登校する</button>
+
+<div *ngIf="selectList.length!=0 && !isAttended">
+  <select [(ngModel)]="select">
+  <ng-container *ngFor="let select of selectList">
+    <option [value]="select">グループ{{select+1}}</option>
+  </ng-container>
+  </select>
+  <button (click)="addNow(select)">に登校する！</button>
+</div>

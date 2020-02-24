@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const appRoutes: Routes = [
   { path: 'account', loadChildren: './account/account.module#AccountModule', canActivate: [LoginGuard], },
   { path: 'config', loadChildren: './config/config.module#ConfigModule', canActivate: [AuthGuard], },
+  { path: 'attendance/:at_Code', loadChildren: './attendance/attendance.module#AttendanceModule', canActivate: [AuthGuard] },
   { path: '', loadChildren: './reserve/reserve.module#ReserveModule', canActivate: [AuthGuard], },
   { path: '**', component: PageNotFoundComponent }
 ]
