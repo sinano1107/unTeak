@@ -1,0 +1,19 @@
+<div class="mx-5 mb-10 rounded overflow-hidden shadow-lg hover:shadow-2xl">
+  <img class="w-full h-56 object-cover" [src]="date.img">
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2">{{date.month}}/{{date.day}}（{{date.dayOfWeek}}）</div>
+    <p *ngIf="compulsion" class="text-red-600 text-base">
+      この日は指定席です。
+    </p>
+    <p *ngIf="!compulsion" class="text-blue-600 text-base">
+      この日は自由席です！
+    </p>
+  </div>
+  <hr>
+  <div class="px-6 py-4 float-right">
+    <button class="h-10 w-32 border border-blue-400 rounded-full hover:bg-blue-300 focus:bg-blue-400 focus:outline-none"
+            (click)="go()">
+      {{compulsion ? "確認する" : "予約する！"}}
+    </button>
+  </div>
+</div>

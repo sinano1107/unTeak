@@ -1,21 +1,24 @@
-<div>
-  <form (ngSubmit)="submitLogin($event)">
-    <h2>ログインページ</h2>
-    <label for="inputEmail">メールアドレス</label>
-    <input type="email" id="inputEmail" [(ngModel)]="account.email"
-            placeholder="メールアドレスを入力してください" required
-            autocomplete="username email" autofocus
-            name="email">
+<form class="flex justify-center mt-20" (ngSubmit)="submitLogin($event)">
+  <div class="w-11/12 flex justify-center bg-white shadow-xl rounded">
+    <div class="w-5/6">
+      <label class="mt-5 block text-gray-700 text-sm font-bold mb-2" for="email">
+        メールアドレス
+      </label>
+      <input [(ngModel)]="account.email" class="w-full shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        id="email" type="text" placeholder="メールアドレス" name="inpuEmail" required
+        autocomplete="username email" autofocus>
 
-    <label for="inputPassword">パスワード</label>
-    <input type="password" id="inputPassword" [(ngModel)]="account.password"
-            placeholder="パスワードを入力してください" required
-            autocomplete="new-password"
-            name="password">
+      <label class="mt-5 block text-gray-700 text-sm font-bold mb-2" for="username">
+        パスワード
+      </label>
+      <input [(ngModel)]="account.password" class="w-full shadow border rounded py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+        id="username" type="password" placeholder="********" name="inputPassword" required
+        autocomplete="new-password">
 
-    <button type="submit">ログイン(仮)</button>
-  </form>
+      <div class="flex justify-center mt-16 mb-6">
+        <button type="submit" class="rounded bg-blue-500 text-white py-2 px-4 hover:bg-blue-700 focus:bg-blue-600 focus:outline-none">ログイン！</button>
+      </div>
+    </div>
 
-  <p>email: {{ account.email }}</p>
-  <p>password: {{ account.password }}</p>
-</div>
+  </div>
+</form>

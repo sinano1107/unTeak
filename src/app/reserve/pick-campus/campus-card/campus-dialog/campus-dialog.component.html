@@ -1,0 +1,23 @@
+<app-loading *ngIf="loading"></app-loading>
+<div *ngIf="!loading">
+  <h2 mat-dialog-title>グループ{{data.campusId+1}}</h2>
+  <mat-dialog-content>メンバー {{campusReserveDatas.length}}/6</mat-dialog-content>
+  <p *ngIf="campusReserveDatas.length==0">だれもいません</p>
+  <mat-chip-list>
+    <ng-container *ngFor="let campusReserveData of campusReserveDatas">
+      <app-user-chip [uid]="campusReserveData.uid"></app-user-chip>
+    </ng-container>
+  </mat-chip-list>
+
+  <hr class="mt-10">
+
+  <div *ngIf="!compulsion" class="mt-5 float-right">
+    <button *ngIf="campusReserveDatas.length!=6 && isMe==''" (click)="reservation()" class="h-10 w-32 border border-blue-400 hover:bg-blue-300 rounded-full focus:outline-none">
+      予約する！
+    </button>
+    <button *ngIf="isMe" (click)="cancel()" class="h-10 w-32 border border-red-400 hover:bg-red-300 rounded-full focus:outline-none">
+      キャンセル
+    </button>
+    <p *ngIf="campusReserveDatas.length==6 && isMe==''" class="text-red-400">この席はいっぱいなので予約できません😢</p>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<app-loading *ngIf="!(input_at_Code!='x' && true_at_Code!='y' && myUid)"></app-loading>
+
+<div *ngIf="input_at_Code!='x' && true_at_Code!='y' && myUid" class="flex justify-center mt-64">
+  <p *ngIf="input_at_Code!=true_at_Code">このURLは不正です。</p>
+  <p *ngIf="isAttended">あなたは登校済みです</p>
+
+  <button *ngIf="(input_at_Code==true_at_Code) && !isAttended"
+    class="h-40 w-40 border border-teal-300 bg-teal-100 rounded-full text-xl text-pink-500 font-semibold
+          hover:bg-teal-300 focus:outline-none" (click)="attendance()">
+    登校する！
+  </button>
+
+  <div *ngIf="selectList.length!=0 && !isAttended">
+    <select [(ngModel)]="select">
+    <ng-container *ngFor="let select of selectList">
+      <option [value]="select">グループ{{select+1}}</option>
+    </ng-container>
+    </select>
+    <button (click)="addNow(select)">に登校する！</button>
+  </div>
+</div>
