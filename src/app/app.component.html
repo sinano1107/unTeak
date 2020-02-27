@@ -37,7 +37,7 @@
     </mat-sidenav-content>
 
     <!--sidenav-->
-    <mat-sidenav class="w-3/5" mode="over" [(opened)]="isOpen">
+    <mat-sidenav *ngIf="session_data.login" class="w-3/5" mode="over" [(opened)]="isOpen">
 
       <!--mydata-->
 				<div class="text-gray-800">
@@ -76,7 +76,7 @@
 
 
         <div class="flex justify-center items-center absolute inset-x-0 bottom-0 h-16 bg-gray-300">
-          {{date.getYear()+1900}}---マサキんぎょ
+          {{date.getFullYear()}}---マサキんぎょ
         </div>
 
     </mat-sidenav>

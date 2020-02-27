@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromImage from './store/image.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ImageEffects } from './store/image.effects';
+import 'firebase/storage';
 
 @NgModule({
   declarations: [ImageComponent],

@@ -18,7 +18,7 @@ export class ImageComponent implements OnInit {
   @Input() classItem: string;
 
   images: Observable<{}>;
-  public url = '';
+  public url: string;
   isLoading = true;
 
   constructor(private image: ImageService,
