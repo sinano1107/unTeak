@@ -13,8 +13,6 @@ import * as fromCore from '../../core/store/reducers';
 })
 export class AttendanceComponent implements OnInit {
 
-  message = 'メッセージなし';
-
   myUid: string;
   input_at_Code = 'x';
   true_at_Code = 'y';
@@ -87,6 +85,7 @@ export class AttendanceComponent implements OnInit {
             break
           }
         }
+        this.makeSelect();
       })
   }
 
@@ -114,11 +113,16 @@ export class AttendanceComponent implements OnInit {
   }
 
   addNow(campusId: number): void {
+    const now = new Date();
     this.db.collection('communities')
       .doc('g3Xnp6T1S9xwsDhZLyYZ')
       .collection('nows')
       .add(
-        new Now(this.myUid, campusId).deserialize()
+        new Now(
+          this.myUid,
+          campusId,
+          Number(`${now.getHours()}${this.getdoubleDigestNumber(now.getMinutes())}`),
+        ).deserialize()
       ).then(() => {
         alert(`あなたはグループ${Number(campusId)+1}に登校しました！`);
         this.isAttended = true;
