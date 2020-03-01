@@ -121,7 +121,7 @@ export class AttendanceComponent implements OnInit {
         new Now(
           this.myUid,
           campusId,
-          Number(`${now.getHours()}${this.getdoubleDigestNumber(now.getMinutes())}`),
+          Number(`${now.getHours()}${this.getdoubleDigestNumber(now.getMinutes())}${this.getdoubleDigestNumber(now.getSeconds())}`),
         ).deserialize()
       ).then(() => {
         alert(`あなたはグループ${Number(campusId)+1}に登校しました！`);
