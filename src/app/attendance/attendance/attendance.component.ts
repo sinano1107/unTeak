@@ -73,28 +73,26 @@ export class AttendanceComponent implements OnInit {
     return ("0" + number).slice(-2)
   }
 
+  // 今日の日程があるか検索
   getReserveId(toDay: number) {
     this.db.collection('communities')
       .doc('g3Xnp6T1S9xwsDhZLyYZ')
-      .collection('reserves')
-      .snapshotChanges().subscribe(reserves => {
-        for (let i=0; i<reserves.length; i++) {
-          const doc = reserves[i].payload.doc;
-          if (doc.data().date == toDay) {
-            this.searchMyReserveData(doc.id);
-            break
-          }
-        }
-        this.makeSelect();
+      .collection('reserves', ref => {
+        return ref.where("date", "==", toDay);
       })
+      .snapshotChanges()
+      .subscribe(res => {
+        res.length===0 ?
+          this.makeSelect()
+          : this.searchMyReserveData(res[0].payload.doc.id);
+      });
+
   }
 
   attendance() {
-    // todo: 現在時刻を取得
     const nowDate = new Date();
     let breakTime = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 9, 30);
 
-    // todo: 9:30以前の場合reserveDataを調べる
     if (breakTime >= nowDate) {
       // 9:30以前の場合
       const toDay = Number(`${nowDate.getFullYear()}${this.getdoubleDigestNumber(nowDate.getMonth()+1)}${this.getdoubleDigestNumber(nowDate.getDate())}`);
@@ -130,20 +128,29 @@ export class AttendanceComponent implements OnInit {
       .catch(() => alert('登校に失敗しました...'));
   }
 
+  // 自分の今日の予約を探す
   searchMyReserveData(reserveId: string) {
-    this.db.collection('communities')
+    const reserveDatasRef = this.db.collection('communities')
       .doc('g3Xnp6T1S9xwsDhZLyYZ')
-      .collection('reserveDatas')
-      .valueChanges().subscribe(reserveDatas => {
-        for (let i=0; i<reserveDatas.length; i++) {
-          const reserveData = reserveDatas[i];
-          this.reserveDataList[reserveData.campusId] += 1;
-          if (reserveData.reserveId==reserveId && reserveData.uid==this.myUid) {
-            this.addNow(reserveData.campusId);
-            break
-          } else if (i == reserveDatas.length-1) {
-            // 予約していなかった時の処理
-            this.makeSelect()
+      .collection('reserveDatas');
+    const x = reserveDatasRef.snapshotChanges()
+      .subscribe(reserveDatas => {
+        if (reserveDatas.length===0) {
+          this.makeSelect()
+        } else {
+          for (let i=0; i<reserveDatas.length; i++) {
+            const reserveData = reserveDatas[i];
+            const data = reserveData.payload.doc.data();
+            this.reserveDataList[data.campusId] += 1;
+            if (data.reserveId==reserveId && data.uid==this.myUid) {
+              this.addNow(data.campusId);
+              x.unsubscribe();
+              // 予約データ削除
+              reserveDatasRef.doc(reserveData.payload.doc.id).delete();
+              break
+            } else if (i == reserveDatas.length-1) {
+              this.makeSelect()
+            }
           }
         }
       })
