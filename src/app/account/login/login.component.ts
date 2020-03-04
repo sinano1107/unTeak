@@ -15,10 +15,10 @@ export class LoginComponent implements OnInit {
 
   constructor(private sessionService: SessionService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  submitLogin() {
+  submitLogin(): void {
     if (this.account.email!='' && this.account.password!='') {
       this.sessionService.login(this.account);
     }

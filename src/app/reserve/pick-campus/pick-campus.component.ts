@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as fromReserve from '../store/reserve/reserve.reducer';
@@ -12,7 +13,7 @@ import { LoadReserves } from '../store/reserve/reserve.actions';
   templateUrl: './pick-campus.component.html',
   styleUrls: ['./pick-campus.component.css']
 })
-export class PickCampusComponent implements OnInit {
+export class PickCampusComponent implements OnInit, OnDestroy {
 
   x = [...Array(9).keys()];
   y = [...Array(9).keys()].map(i => i+9);
@@ -21,42 +22,42 @@ export class PickCampusComponent implements OnInit {
   reserveId: string;
   loading = true;
 
-  constructor(private route: ActivatedRoute,
-              private reserve: Store<fromReserve.State>,
-              private reserveData: Store<fromReserveData.State>) {
+  subsc = new Subscription();
+
+  constructor(
+    private route: ActivatedRoute,
+    private reserve: Store<fromReserve.State>,
+    private reserveData: Store<fromReserveData.State>,
+  ) {}
+
+  ngOnInit(): void {
     this.reserve.dispatch(new LoadReserves({ reserves: [] }));
-    /*this.reserve.select(fromReserve.getReserveLoading).subscribe(
-      reserve_Loading => {
-        this.reserve_Laoding = reserve_Loading;
-      }
-    )
-    this.reserveData.select(fromReserveData.getReserveDataLoading).subscribe(
-      reserveData_Loading => {
-        this.reserveData_Loading = reserveData_Loading;
-      }
-    )*/
 
     // reserveIdsが存在するか調べる
-    this.reserve.select(fromReserve.selectReserveIds).subscribe(reserveIds => {
-      this.route.params.subscribe(params => {
-        reserveIds.length==0 ? this.loading=false : this.loading=true;
-        this.isExistence = false;
-        this.reserveId = params['reserveId'];
+    this.subsc.add(this.reserve.select(fromReserve.selectReserveIds)
+      .subscribe(reserveIds => {
+        this.subsc.add(this.route.params
+          .subscribe(params => {
+            reserveIds.length==0 ? this.loading=false : this.loading=true;
+            this.isExistence = false;
+            this.reserveId = params['reserveId'];
 
-        for (let i=0; i<reserveIds.length; i++) {
-          if (reserveIds[i] == params['reserveId']) {
-            // 存在したら
-            this.isExistence = true;
-            this.loading = false;
-            this.reserveData.dispatch(new LoadReserveDatas({ reserveDatas: [] }));
-            break
-          } else if (i==reserveIds.length-1) {
-            this.loading = false;
-          }
-        }
-      })
-    })
+            for (let i=0; i<reserveIds.length; i++) {
+              if (reserveIds[i] == params['reserveId']) {
+                // 存在したら
+                this.isExistence = true;
+                this.loading = false;
+                this.reserveData.dispatch(new LoadReserveDatas({ reserveDatas: [] }));
+                break
+              } else if (i==reserveIds.length-1) {
+                this.loading = false;
+              }
+            }
+    }))}));
   }
 
-  ngOnInit() {}
+  ngOnDestroy(): void {
+    this.subsc.unsubscribe();
+  }
+
 }

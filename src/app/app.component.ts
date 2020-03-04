@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { Session } from './class/session';
 import { SessionService } from './core/service/session.service';
@@ -11,28 +12,42 @@ import * as fromCore from './core/store/reducers';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'unTeak';
   isOpen = false;
   session_data: Session;
   session_loading: boolean;
   date = new Date();
 
-  constructor(private session: SessionService,
-              private router: Router,
-              private store: Store<fromCore.State>) {
+  subsc = new Subscription();
+
+  constructor(
+    private session: SessionService,
+    private router: Router,
+    private store: Store<fromCore.State>,
+  ) {}
+
+  ngOnInit(): void {
     this.session.checkLogin();
-    this.store.select(fromCore.getSession)
+
+    this.subsc.add(this.store
+      .select(fromCore.getSession)
       .subscribe(data => {
           this.session_data = data;
-      })
-    this.store.select(fromCore.getLoading)
+    }));
+
+    this.subsc.add(this.store
+      .select(fromCore.getLoading)
       .subscribe(loading => {
         this.session_loading = loading;
-      })
+    }));
   }
 
-  go(link: string) {
+  ngOnDestroy(): void {
+    this.subsc.unsubscribe();
+  }
+
+  go(link: string): void {
     this.isOpen = false;
     this.router.navigate([link]);
   }

@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-chip',
@@ -13,10 +14,12 @@ export class UserChipComponent implements OnInit {
   name: string;
   icon = '';
 
+  subsc = new Subscription();
+
   constructor(private afs: AngularFirestore) { }
 
-  ngOnInit() {
-    this.afs
+  ngOnInit(): void {
+    this.subsc.add(this.afs
       .collection('users')
       .doc(this.uid)
       .valueChanges()
@@ -24,7 +27,11 @@ export class UserChipComponent implements OnInit {
         this.userData = userData;
         this.name = userData['name'];
         this.icon = userData['icon'];
-      })
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subsc.unsubscribe();
   }
 
 }
