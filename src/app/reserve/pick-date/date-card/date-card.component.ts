@@ -18,7 +18,7 @@ export class DateCardComponent implements OnInit {
   ngOnInit() {
   }
 
-  go() {
+  go(): void {
     this.router.navigate(['/pick-campus', this.reserveId]);
   }
 

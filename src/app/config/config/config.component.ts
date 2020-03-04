@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { Subscription } from 'rxjs';
 
 import { User } from '../../class/user';
 import { Store } from '@ngrx/store';
@@ -11,26 +12,34 @@ import * as fromCore from '../../core/store/reducers';
   templateUrl: './config.component.html',
   styleUrls: ['./config.component.css']
 })
-export class ConfigComponent implements OnInit {
+export class ConfigComponent implements OnInit, OnDestroy {
 
   myData: User;
   name: string;
   loading: boolean;
 
-  constructor(private store: Store<fromCore.State>,
-              private db: AngularFirestore,
-              private afs: AngularFireStorage,) {
-    this.store.select(fromCore.getSession)
+  subsc = new Subscription();
+
+  constructor(
+    private store: Store<fromCore.State>,
+    private db: AngularFirestore,
+    private afs: AngularFireStorage,
+  ) {}
+
+  ngOnInit(): void {
+    this.subsc.add(this.store
+      .select(fromCore.getSession)
       .subscribe(data => {
         this.myData = data.user;
         this.name = data.user.name;
-      })
+    }));
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this.subsc.unsubscribe();
   }
 
-  onChangeInput(evt, path: string) {
+  onChangeInput(evt, path: string): void {
     this.loading = true;
     const file: File = evt.target.files[0];
 
@@ -47,7 +56,7 @@ export class ConfigComponent implements OnInit {
   }
 
   // アップロードした画像のパスにアップデートする
-  update(updatePath, path) {
+  update(updatePath, path): void {
     if (path=='icon') {
       this.db.collection('users')
         .doc(this.myData.uid)
@@ -68,7 +77,7 @@ export class ConfigComponent implements OnInit {
   }
 
   // デフォルト画像に戻す
-  default(path: string) {
+  default(path: string): void {
     this.loading = true;
     this.afs.storage.ref(`/${this.myData.uid}/${path}`).delete();
     if (path=='icon') {
@@ -79,7 +88,7 @@ export class ConfigComponent implements OnInit {
   }
 
   // 名前を変更
-  nameUpdate() {
+  nameUpdate(): void {
     if (this.name!=this.myData.name && this.name!='') {
       this.db.collection('users')
         .doc(this.myData.uid)
@@ -87,7 +96,7 @@ export class ConfigComponent implements OnInit {
           name: this.name
         }).then(() => {
           location.reload()
-        })
+        });
     }
   }
 }

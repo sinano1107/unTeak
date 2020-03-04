@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { Reserve } from '../../class/reserve';
 import { Store } from '@ngrx/store';
@@ -10,26 +11,34 @@ import { LoadReserves } from '../store/reserve/reserve.actions';
   templateUrl: './pick-date.component.html',
   styleUrls: ['./pick-date.component.css']
 })
-export class PickDateComponent implements OnInit {
+export class PickDateComponent implements OnInit, OnDestroy {
 
   reserves: Reserve[];
   loading: boolean;
 
-  constructor(private reserve: Store<fromReserve.State>) {
+  subsc = new Subscription();
+
+  constructor(private reserve: Store<fromReserve.State>) {}
+
+  ngOnInit(): void {
     this.reserve.dispatch(new LoadReserves({ reserves: [] }));
-    this.reserve.select(fromReserve.selectAllReserves).subscribe(
-      reserves => {
-        this.reserves = reserves;
-      }
-    );
-    this.reserve.select(fromReserve.getReserveLoading).subscribe(
-      loading => {
-        this.loading = loading;
-      }
-    )
+    this.subsc.add(this.reserve
+      .select(fromReserve.selectAllReserves)
+      .subscribe(
+        reserves => {
+          this.reserves = reserves;
+    }));
+
+    this.subsc.add(this.reserve
+      .select(fromReserve.getReserveLoading)
+      .subscribe(
+        loading => {
+          this.loading = loading;
+    }));
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this.subsc.unsubscribe();
   }
 
 }
