@@ -18,8 +18,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  submitLogin(e: Event) {
-    e.preventDefault();
+  submitLogin() {
     if (this.account.email!='' && this.account.password!='') {
       this.sessionService.login(this.account);
     }
