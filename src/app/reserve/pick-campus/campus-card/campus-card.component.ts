@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { CampusDialogComponent } from './campus-dialog/campus-dialog.component';
+import { Subscription } from 'rxjs';
 
 import { Session } from '../../../class/session';
 import { Store } from '@ngrx/store';
@@ -20,34 +21,42 @@ export class CampusCardComponent implements OnInit {
   campusReserveDataCount: number;
   myData: Session;
 
-  constructor(private store: Store<fromCore.State>,
-              private reserveData: Store<fromReserveData.State>,
-              public matDialog : MatDialog) {}
+  subsc = new Subscription();
 
-  ngOnInit() {
-    this.reserveData.select(fromReserveData.selectAllReserveDatas).subscribe((reserveDatas) => {
-      this.campusReserveDataCount = 0;
-      reserveDatas.forEach(reserveData => {
-        if (reserveData.campusId==this.campusId && reserveData.reserveId==this.reserveId) {
-          this.campusReserveDataCount+=1;
-        }
-      })
-    })
+  constructor(
+    private store: Store<fromCore.State>,
+    private reserveData: Store<fromReserveData.State>,
+    public matDialog : MatDialog,
+  ) {}
 
-    this.store.select(fromCore.getSession)
+  ngOnInit(): void {
+    this.subsc.add(this.reserveData.select(fromReserveData.selectAllReserveDatas)
+      .subscribe((reserveDatas) => {
+        this.campusReserveDataCount = 0;
+        reserveDatas.forEach(reserveData => {
+          if (reserveData.campusId==this.campusId && reserveData.reserveId==this.reserveId) {
+            this.campusReserveDataCount+=1;
+          }
+    })}));
+
+    this.subsc.add(this.store.select(fromCore.getSession)
       .subscribe(data => {
-          this.myData = data;
-      })
+        this.myData = data;
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subsc.unsubscribe();
   }
 
   // 削除ボタンが押されたとき
-    openDialog(event:string){
-      // ダイアログの表示
-      this.matDialog.open(CampusDialogComponent, {
-                  'data': {'campusId': this.campusId, 'reserveId': this.reserveId, 'myUid': this.myData.user.uid},
-                  'width' : '500px',
-                  'disableClose' : false
-                 });
-    }
+  openDialog(): void {
+    // ダイアログの表示
+    this.matDialog.open(CampusDialogComponent, {
+      'data': {'campusId': this.campusId, 'reserveId': this.reserveId, 'myUid': this.myData.user.uid},
+      'width' : '500px',
+      'disableClose' : false
+     });
+  }
 
 }
