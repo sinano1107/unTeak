@@ -9,7 +9,7 @@ export class Now {
     this.time = time;
   }
 
-  deserialize(): Object {
+  deserialize() {
     let obj = Object.freeze({uid: this.uid, campusId: this.campusId, time: this.time});
     return Object.assign({}, obj);
   }

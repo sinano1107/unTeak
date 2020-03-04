@@ -26,7 +26,7 @@ export class ReserveDate {
     this.date = date;
   }
 
-  transform(): Object {
+  transform() {
     this.year = Number(this.date.slice(0,4));
     this.month = Number(this.date.slice(4,6));
     this.day = Number(this.date.slice(6,8));

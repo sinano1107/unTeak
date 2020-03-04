@@ -13,7 +13,7 @@ export class ReserveData {
     this.campusId = campusId;
   }
 
-  deserialize(): Object {
+  deserialize() {
     let obj = Object.freeze({reserveId: this.reserveId, uid: this.uid, campusId: this.campusId});
     return Object.assign({}, obj);
   }
